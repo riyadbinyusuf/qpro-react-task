@@ -1,0 +1,9 @@
+.fb-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+}
+
+.field-selector {
+  text-align: left;
+}

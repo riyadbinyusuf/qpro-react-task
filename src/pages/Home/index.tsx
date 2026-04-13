@@ -1,11 +1,10 @@
-import { Link } from "react-router";
 import styles from './home.module.css';
+import Nav from "@/components/Nav";
 
 export default function Home() {
   return (
-    <nav className={styles.nav}>
-      <Link to="/todos">Todos</Link>
-      <Link to="/form-builder">Form builder</Link>
-    </nav>
+    <div className={styles.center}>
+      <Nav />
+    </div>
   )
 }

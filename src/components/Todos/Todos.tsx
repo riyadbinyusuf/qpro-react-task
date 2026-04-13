@@ -25,19 +25,15 @@ export default function Todos() {
     _limit: "10",
   });
   const currentPage = searchParams.get("_page") ?? 1;
-  const limit = searchParams.get('_limit') ?? 10;
-  const userId = searchParams.get('userId') ?? 'all';
-  const status = searchParams.get('completed') ?? 'All';
+  const limit = searchParams.get("_limit") ?? 10;
+  const userId = searchParams.get("userId") ?? "all";
+  const status = searchParams.get("completed") ?? "All";
   const filterString = searchParams.toString();
 
   const { data, isLoading } = useQuery({
     queryKey: ["todos", filterString],
     queryFn: fetchTodos,
   });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   const handleNext = (e: any) => {
     e.preventDefault();
@@ -57,8 +53,8 @@ export default function Todos() {
   };
   const handleChangeSearchParams = (key: string, value: string) => {
     searchParams.set(key, value);
-    if (key === '_limit') {
-      searchParams.set('_page', '1');
+    if (key === "_limit") {
+      searchParams.set("_page", "1");
     }
     setSearchParams(searchParams);
   };
@@ -74,7 +70,7 @@ export default function Todos() {
     } else {
       searchParams.delete("completed");
     }
-    searchParams.set('_page', '1');
+    searchParams.set("_page", "1");
     setSearchParams(searchParams);
   };
 
@@ -85,7 +81,7 @@ export default function Todos() {
     } else {
       searchParams.set("userId", val);
     }
-    searchParams.set('_page', '1');
+    searchParams.set("_page", "1");
     setSearchParams(searchParams);
   };
 
@@ -97,7 +93,7 @@ export default function Todos() {
           <div className={styles.per_page}>
             <div className="goto">Status</div>
             <div className="">
-              <select onChange={handleStatusFilter} value={status ?? ''}>
+              <select onChange={handleStatusFilter} value={status ?? ""}>
                 {["All", "completed", "pending"].map((status) => {
                   return (
                     <option value={status} key={status}>
@@ -128,13 +124,13 @@ export default function Todos() {
               <button
                 type="button"
                 onClick={() => {
-                  searchParams.set("_limit", "10");
-                  searchParams.delete("completed");
-                  searchParams.delete("userId");
-                  setSearchParams(searchParams);
+                  setSearchParams({
+                    _page: "1",
+                    _limit: "10",
+                  });
                 }}
               >
-                Clear Filter
+                Reset Filter
               </button>
             </div>
           </div>
@@ -149,6 +145,11 @@ export default function Todos() {
             </tr>
           </thead>
           <tbody>
+            {isLoading ? (
+              <>
+                <div>Loading...</div>
+              </>
+            ) : null}
             {data &&
               data.map((todo: Todo) => {
                 return (
@@ -194,6 +195,7 @@ export default function Todos() {
                 onChange={(e) =>
                   handleChangeSearchParams("_page", e.target.value)
                 }
+                size={3}
               />
             </div>
           </div>

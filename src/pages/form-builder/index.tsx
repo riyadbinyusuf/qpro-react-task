@@ -1,5 +1,7 @@
+import FormBuilder from "@/components/FormBuilder/FormBuilder";
+
 export default function FormBuilderPage() {
   return (
-    <div>FromBuilderPage</div>
+    <FormBuilder />
   )
 }
