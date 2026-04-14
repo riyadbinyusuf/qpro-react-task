@@ -14,6 +14,17 @@
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+  --green-600: lab(59.0978% -58.6621 41.2579);
+  --red-500: lab(55.4814% 75.0732 48.8528);
+  --red-600: lab(48.4493% 77.4328 61.5452);
+  --blue-600: oklch(54.6% 0.245 262.881);
+  /* --blue-600: lab(44.0605% 29.0279 -86.0352); */
+  --gray-100: oklch(96.7% 0.003 264.542);
+  --gray-200: oklch(92.8% 0.006 264.531);
+  --gray-300: oklch(87.2% 0.01 258.338);
+  --gray-400: oklch(70.7% 0.022 261.325);
+  --gray-500: oklch(55.1% 0.027 264.364);
+  --gray-600: oklch(44.6% 0.03 256.802);
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -43,10 +54,6 @@
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
   }
 } */
 
@@ -95,17 +102,91 @@ p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
+a {
   color: var(--text-h);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+a:hover, a:active {
+  color: var(--blue-600);
+}
+
+
+input, textarea {
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  color: var(--text)
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.center-x {
+  display: flex;
+  justify-content: center;
+}
+
+.center-y {
+  display: flex;
+  align-items: center;
+}
+
+.center-xy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background: var(--blue-600);
+  padding: 10px 30px;
+  border-radius: 4px;
+  color: var(--bg);
+  border: 0;
+  margin: 20px 0 0;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-16 {
+  gap: 16px;
+}
+
+.gap-20 {
+  gap: 20px;
 }

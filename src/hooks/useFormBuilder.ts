@@ -1,119 +1,116 @@
-import { FIELD_TYPES, FORM_DATA_STORAGE_KEY } from "@/utils/constants";
-import { getFromStorage } from "@/utils/helpers";
+import {
+  FIELD_TYPES,
+  FORM_DATA_STORAGE_KEY,
+  inputFields,
+} from "@/utils/constants";
+import { saveToStorage } from "@/utils/helpers";
+import type { InputField } from "@/utils/types";
 import { nanoid } from "nanoid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { redirect, useNavigate } from "react-router";
 
 export default function useFormBuilder() {
   const inputTypes = Object.keys(FIELD_TYPES);
-  const commonAttrs = {
-    id: "",
-    label: "",
-    name: "",
-  };
-  const inputFields: any = {
-    text: {
-      type: "text",
-      ...commonAttrs,
-    },
-    number: {
-      type: "number",
-      ...commonAttrs,
-      extra_attrs: {
-        step: true,
-      },
-    },
-    email: {
-      type: "email",
-      ...commonAttrs,
-    },
-    password: {
-      type: "password",
-      ...commonAttrs,
-    },
-    file: {
-      type: "file",
-      ...commonAttrs,
-    },
-    radio: {
-      type: "radio",
-      ...commonAttrs,
-      options: [
-        {
-          id: "",
-          value: "",
-          label: "",
-        },
-      ],
-    },
-    checkbox: {
-      type: "checkbox",
-      ...commonAttrs,
-      options: [
-        {
-          ...commonAttrs,
-          value: "",
-        },
-      ],
-    },
-    select: {
-      type: "select",
-      ...commonAttrs,
-      options: [
-        {
-          ...commonAttrs,
-          value: "",
-        },
-      ],
-    },
-    date: {
-      type: "date",
-      ...commonAttrs,
-    },
-    range: {
-      type: "range",
-      ...commonAttrs,
-      extra_attrs: {
-        min: true,
-        max: true,
-      },
-    },
-    url: {
-      type: "url",
-      ...commonAttrs,
-    },
-    textarea: {
-      type: "textarea",
-      ...commonAttrs,
-      extra_attrs: {
-        rows: 5,
-        cols: 20,
-      },
-    },
-  };
   const [fields, setFields] = useState([]);
   const [formFields, setFormFields] = useState<any>([]);
+  const [selectedField, setSelectedField] = useState<any>(null);
+  const [fieldOptions, setFieldOptions] = useState<any[]>([]);
+  const [fieldOption, setFieldOption] = useState<any>({});
 
-  const handleAddFormField = (inputField: any) => {
-    const inputId = inputField.name?.trim().toLowerCase() + "_" + nanoid(5);
-    const updatedFormFields = [...formFields, { ...inputField, id: inputId }];
-    setFormFields(updatedFormFields);
+  const navigate = useNavigate();
+
+  const handleInputType = (type: string) => {
+    setSelectedField(inputFields[type]);
   };
 
-  const handleRemoveFormField = (id: string) => {
-    const copiedFiels = [...formFields];
-    const filterFields = copiedFiels.filter((f: any) => f.id !== id);
-    setFormFields(filterFields);
-  };
-
-  useEffect(() => {
-    if (window !== undefined) {
-      const savedForm = getFromStorage(FORM_DATA_STORAGE_KEY);
-      console.log({savedForm})
-      if (savedForm) {
-        setFormFields(savedForm);
-      }
+  const handleAddFormField = () => {
+    let copiedFormFields = [...formFields];
+    const newField = {
+      ...selectedField,
+      id: nanoid(6),
+    };
+    if (
+      [FIELD_TYPES.checkbox, FIELD_TYPES.radio, FIELD_TYPES.select].includes(
+        newField.type,
+      ) &&
+      fieldOptions?.length > 0
+    ) {
+      newField.options = fieldOptions;
     }
-  }, [])
+    copiedFormFields.push(newField);
+    console.log({ newField, copiedFormFields });
+    setFormFields(copiedFormFields);
+    setFieldOptions([]);
+    setFieldOption(null);
+    setSelectedField(null);
+  };
+
+  const handleAddFieldLabel = (val: string) => {
+    setSelectedField((prev: InputField) => ({
+      ...prev,
+      label: val,
+      name: val.trim().toLowerCase().replaceAll(" ", "_"),
+    }));
+  };
+
+  const handleOptionRemove = (idx: number) => {
+    let copiedOptions = [...fieldOptions];
+    copiedOptions.splice(idx, 1);
+    setFieldOptions(copiedOptions);
+  };
+
+  const handleAddOptionLabel = (val: string) => {
+    setFieldOption(() => {
+      return {
+        id: nanoid(5),
+        label: val,
+        value: val,
+        name: val.trim().toLowerCase().replaceAll(" ", "_"),
+      };
+    });
+  };
+
+  const handleAddOption = () => {
+    let copiedFieldOptions = [...fieldOptions];
+    const newOption = {
+      ...fieldOption,
+    };
+    copiedFieldOptions.push(newOption);
+    console.log({ newOption, copiedFieldOptions });
+    setFieldOptions(copiedFieldOptions);
+    setFieldOption(null);
+  };
+
+  const handleRemoveField = (idx: number) => {
+    let copiedFields = [...formFields];
+    copiedFields.splice(idx, 1);
+    setFormFields(copiedFields);
+  };
+
+  const handleExtraAttrUpdate = (key: string, val: string) => {
+    let copiedField = {
+      ...selectedField,
+      extra_attrs: {
+        ...selectedField.extra_attrs,
+        [key]: val,
+      },
+    };
+    console.log({ key, val, copiedField });
+    setSelectedField(copiedField);
+  };
+
+  const handleSaveToStorage = () => {
+    if (formFields?.length <= 0) {
+      toast.error("No field added!")
+      return;
+    };
+
+    saveToStorage(FORM_DATA_STORAGE_KEY, formFields);
+    
+    toast.success("Form save to storage successfully");
+    navigate("/form-preview");
+  };
 
   return {
     inputFields,
@@ -121,8 +118,18 @@ export default function useFormBuilder() {
     fields,
     setFields,
     formFields,
+    selectedField,
+    fieldOption,
+    fieldOptions,
     setFormFields,
+    handleInputType,
+    handleAddFieldLabel,
     handleAddFormField,
-    handleRemoveFormField,
+    handleAddOption,
+    handleAddOptionLabel,
+    handleOptionRemove,
+    handleRemoveField,
+    handleExtraAttrUpdate,
+    handleSaveToStorage,
   };
 }

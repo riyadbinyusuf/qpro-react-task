@@ -1,7 +1,14 @@
-.fb-grid {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 20px;
+.pageTitle {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .field-selector {

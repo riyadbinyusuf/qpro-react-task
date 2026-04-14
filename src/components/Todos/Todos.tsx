@@ -35,7 +35,7 @@ export default function Todos() {
     queryFn: fetchTodos,
   });
 
-  const handleNext = (e: any) => {
+  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const current =
       typeof currentPage === "string" ? parseInt(currentPage) : currentPage;
@@ -43,7 +43,7 @@ export default function Todos() {
     searchParams.set("_page", nextPage);
     setSearchParams(searchParams);
   };
-  const handlePrev = (e: any) => {
+  const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const current =
       typeof currentPage === "string" ? parseInt(currentPage) : currentPage;
@@ -59,7 +59,7 @@ export default function Todos() {
     setSearchParams(searchParams);
   };
 
-  const handleStatusFilter = (e: any) => {
+  const handleStatusFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     const isExists = ["completed", "pending"].includes(val);
 
@@ -74,7 +74,7 @@ export default function Todos() {
     setSearchParams(searchParams);
   };
 
-  const handleUserFilter = (e: any) => {
+  const handleUserFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     if (val === "all") {
       searchParams.delete("userId");
@@ -87,7 +87,7 @@ export default function Todos() {
 
   return (
     <>
-      <div>
+      <main>
         {/* todo filter */}
         <div className={styles["flex-row"]}>
           <div className={styles.per_page}>
@@ -111,7 +111,7 @@ export default function Todos() {
                 <option disabled>Select user</option>
                 <option value="all">All</option>
                 {userList &&
-                  userList.map((user: any) => {
+                  userList.map((user: User) => {
                     return (
                       <option value={user.id} key={user.id}>
                         {user.name}
@@ -147,7 +147,11 @@ export default function Todos() {
           <tbody>
             {isLoading ? (
               <>
-                <div>Loading...</div>
+                <tr>
+                  <td></td>
+                  <td>Loading...</td>
+                  <td></td>
+                </tr>
               </>
             ) : null}
             {data &&
@@ -219,7 +223,7 @@ export default function Todos() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

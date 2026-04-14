@@ -1,9 +1,9 @@
 /* Nav */
 .nav {
-  display: flex;
-  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .nav a {
-  margin: 0 5px;
+  margin: 0 15px;
 }
