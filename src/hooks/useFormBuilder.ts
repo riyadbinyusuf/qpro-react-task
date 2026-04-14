@@ -8,7 +8,7 @@ import type { InputField } from "@/utils/types";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function useFormBuilder() {
   const inputTypes = Object.keys(FIELD_TYPES);
@@ -38,8 +38,9 @@ export default function useFormBuilder() {
     ) {
       newField.options = fieldOptions;
     }
+
     copiedFormFields.push(newField);
-    console.log({ newField, copiedFormFields });
+
     setFormFields(copiedFormFields);
     setFieldOptions([]);
     setFieldOption(null);
@@ -76,8 +77,9 @@ export default function useFormBuilder() {
     const newOption = {
       ...fieldOption,
     };
+
     copiedFieldOptions.push(newOption);
-    console.log({ newOption, copiedFieldOptions });
+
     setFieldOptions(copiedFieldOptions);
     setFieldOption(null);
   };
@@ -96,7 +98,7 @@ export default function useFormBuilder() {
         [key]: val,
       },
     };
-    console.log({ key, val, copiedField });
+
     setSelectedField(copiedField);
   };
 
@@ -107,7 +109,7 @@ export default function useFormBuilder() {
     };
 
     saveToStorage(FORM_DATA_STORAGE_KEY, formFields);
-    
+
     toast.success("Form save to storage successfully");
     navigate("/form-preview");
   };

@@ -44,7 +44,7 @@ export default function FormPreview() {
             className={`flex flex-col ${styles["gap-16"]}`}
             action={dispatchAction}
           >
-            {formFields.map((field: InputField, idx: number) => {
+            {formFields.map((field: InputField) => {
               return (
                 <Fragment key={field.id}>
                   <div

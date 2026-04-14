@@ -1,5 +1,3 @@
-import { FORM_DATA_STORAGE_KEY } from "./constants";
-
 export function toQueryString(obj: Record<string, any>) {
   return new URLSearchParams(
     Object.entries(obj).filter(
@@ -20,3 +18,4 @@ export function getFromStorage(key: string) {
     return null;
   }
 }
+
