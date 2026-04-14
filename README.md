@@ -12,6 +12,10 @@ Features:
 - Basic dyanmic form builder
 - Form previw 
 
+Taken approaches:
+- Used React query for todos data to manage filter and pagination
+- Used localStorage to save form configuration. 
+
 Usage:
 
 - Clone the repository
